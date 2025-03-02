@@ -8,82 +8,460 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router';
+
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as AboutImport } from "./routes/about";
-import { Route as IndexImport } from "./routes/index";
+import { Route as rootRoute } from './routes/__root';
+import { Route as IndexImport } from './routes/index';
+import { Route as SettingsLayoutImport } from './routes/settings/_layout';
+import { Route as DashboardLayoutImport } from './routes/dashboard/_layout';
+import { Route as CreateLayoutImport } from './routes/create/_layout';
+import { Route as DashboardLayoutIndexImport } from './routes/dashboard/_layout/index';
+import { Route as DashboardLayoutExperimentIdImport } from './routes/dashboard/_layout/experiment/$id';
+import { Route as CreateLayoutDraftExperimentIdImport } from './routes/create/_layout/draft-experiment/$id';
+
+// Create Virtual Routes
+
+const SettingsImport = createFileRoute('/settings')();
+const DashboardImport = createFileRoute('/dashboard')();
+const CreateImport = createFileRoute('/create')();
+const LoginLazyImport = createFileRoute('/login')();
+const SettingsLayoutIndexLazyImport = createFileRoute('/settings/_layout/')();
+const CreateLayoutIndexLazyImport = createFileRoute('/create/_layout/')();
+const SettingsLayoutProfileLazyImport = createFileRoute(
+  '/settings/_layout/profile'
+)();
+const SettingsLayoutLanguageLazyImport = createFileRoute(
+  '/settings/_layout/language'
+)();
+const SettingsLayoutHelpLazyImport = createFileRoute(
+  '/settings/_layout/help'
+)();
 
 // Create/Update Routes
 
-const AboutRoute = AboutImport.update({
-  id: "/about",
-  path: "/about",
+const SettingsRoute = SettingsImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRoute,
 } as any);
 
-const IndexRoute = IndexImport.update({
-  id: "/",
-  path: "/",
+const DashboardRoute = DashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRoute,
 } as any);
+
+const CreateRoute = CreateImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => rootRoute,
+} as any);
+
+const LoginLazyRoute = LoginLazyImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route));
+
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any);
+
+const SettingsLayoutRoute = SettingsLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => SettingsRoute,
+} as any);
+
+const DashboardLayoutRoute = DashboardLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => DashboardRoute,
+} as any);
+
+const CreateLayoutRoute = CreateLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => CreateRoute,
+} as any);
+
+const SettingsLayoutIndexLazyRoute = SettingsLayoutIndexLazyImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SettingsLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/settings/_layout/index.lazy').then((d) => d.Route)
+);
+
+const CreateLayoutIndexLazyRoute = CreateLayoutIndexLazyImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CreateLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/create/_layout/index.lazy').then((d) => d.Route)
+);
+
+const DashboardLayoutIndexRoute = DashboardLayoutIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any);
+
+const SettingsLayoutProfileLazyRoute = SettingsLayoutProfileLazyImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => SettingsLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/settings/_layout/profile.lazy').then((d) => d.Route)
+);
+
+const SettingsLayoutLanguageLazyRoute = SettingsLayoutLanguageLazyImport.update(
+  {
+    id: '/language',
+    path: '/language',
+    getParentRoute: () => SettingsLayoutRoute,
+  } as any
+).lazy(() =>
+  import('./routes/settings/_layout/language.lazy').then((d) => d.Route)
+);
+
+const SettingsLayoutHelpLazyRoute = SettingsLayoutHelpLazyImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => SettingsLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/settings/_layout/help.lazy').then((d) => d.Route)
+);
+
+const DashboardLayoutExperimentIdRoute =
+  DashboardLayoutExperimentIdImport.update({
+    id: '/experiment/$id',
+    path: '/experiment/$id',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any);
+
+const CreateLayoutDraftExperimentIdRoute =
+  CreateLayoutDraftExperimentIdImport.update({
+    id: '/draft-experiment/$id',
+    path: '/draft-experiment/$id',
+    getParentRoute: () => CreateLayoutRoute,
+  } as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
+    '/': {
+      id: '/';
+      path: '/';
+      fullPath: '/';
       preLoaderRoute: typeof IndexImport;
       parentRoute: typeof rootRoute;
     };
-    "/about": {
-      id: "/about";
-      path: "/about";
-      fullPath: "/about";
-      preLoaderRoute: typeof AboutImport;
+    '/login': {
+      id: '/login';
+      path: '/login';
+      fullPath: '/login';
+      preLoaderRoute: typeof LoginLazyImport;
       parentRoute: typeof rootRoute;
+    };
+    '/create': {
+      id: '/create';
+      path: '/create';
+      fullPath: '/create';
+      preLoaderRoute: typeof CreateImport;
+      parentRoute: typeof rootRoute;
+    };
+    '/create/_layout': {
+      id: '/create/_layout';
+      path: '/create';
+      fullPath: '/create';
+      preLoaderRoute: typeof CreateLayoutImport;
+      parentRoute: typeof CreateRoute;
+    };
+    '/dashboard': {
+      id: '/dashboard';
+      path: '/dashboard';
+      fullPath: '/dashboard';
+      preLoaderRoute: typeof DashboardImport;
+      parentRoute: typeof rootRoute;
+    };
+    '/dashboard/_layout': {
+      id: '/dashboard/_layout';
+      path: '/dashboard';
+      fullPath: '/dashboard';
+      preLoaderRoute: typeof DashboardLayoutImport;
+      parentRoute: typeof DashboardRoute;
+    };
+    '/settings': {
+      id: '/settings';
+      path: '/settings';
+      fullPath: '/settings';
+      preLoaderRoute: typeof SettingsImport;
+      parentRoute: typeof rootRoute;
+    };
+    '/settings/_layout': {
+      id: '/settings/_layout';
+      path: '/settings';
+      fullPath: '/settings';
+      preLoaderRoute: typeof SettingsLayoutImport;
+      parentRoute: typeof SettingsRoute;
+    };
+    '/settings/_layout/help': {
+      id: '/settings/_layout/help';
+      path: '/help';
+      fullPath: '/settings/help';
+      preLoaderRoute: typeof SettingsLayoutHelpLazyImport;
+      parentRoute: typeof SettingsLayoutImport;
+    };
+    '/settings/_layout/language': {
+      id: '/settings/_layout/language';
+      path: '/language';
+      fullPath: '/settings/language';
+      preLoaderRoute: typeof SettingsLayoutLanguageLazyImport;
+      parentRoute: typeof SettingsLayoutImport;
+    };
+    '/settings/_layout/profile': {
+      id: '/settings/_layout/profile';
+      path: '/profile';
+      fullPath: '/settings/profile';
+      preLoaderRoute: typeof SettingsLayoutProfileLazyImport;
+      parentRoute: typeof SettingsLayoutImport;
+    };
+    '/dashboard/_layout/': {
+      id: '/dashboard/_layout/';
+      path: '/';
+      fullPath: '/dashboard/';
+      preLoaderRoute: typeof DashboardLayoutIndexImport;
+      parentRoute: typeof DashboardLayoutImport;
+    };
+    '/create/_layout/': {
+      id: '/create/_layout/';
+      path: '/';
+      fullPath: '/create/';
+      preLoaderRoute: typeof CreateLayoutIndexLazyImport;
+      parentRoute: typeof CreateLayoutImport;
+    };
+    '/settings/_layout/': {
+      id: '/settings/_layout/';
+      path: '/';
+      fullPath: '/settings/';
+      preLoaderRoute: typeof SettingsLayoutIndexLazyImport;
+      parentRoute: typeof SettingsLayoutImport;
+    };
+    '/create/_layout/draft-experiment/$id': {
+      id: '/create/_layout/draft-experiment/$id';
+      path: '/draft-experiment/$id';
+      fullPath: '/create/draft-experiment/$id';
+      preLoaderRoute: typeof CreateLayoutDraftExperimentIdImport;
+      parentRoute: typeof CreateLayoutImport;
+    };
+    '/dashboard/_layout/experiment/$id': {
+      id: '/dashboard/_layout/experiment/$id';
+      path: '/experiment/$id';
+      fullPath: '/dashboard/experiment/$id';
+      preLoaderRoute: typeof DashboardLayoutExperimentIdImport;
+      parentRoute: typeof DashboardLayoutImport;
     };
   }
 }
 
 // Create and export the route tree
 
+interface CreateLayoutRouteChildren {
+  CreateLayoutIndexLazyRoute: typeof CreateLayoutIndexLazyRoute;
+  CreateLayoutDraftExperimentIdRoute: typeof CreateLayoutDraftExperimentIdRoute;
+}
+
+const CreateLayoutRouteChildren: CreateLayoutRouteChildren = {
+  CreateLayoutIndexLazyRoute: CreateLayoutIndexLazyRoute,
+  CreateLayoutDraftExperimentIdRoute: CreateLayoutDraftExperimentIdRoute,
+};
+
+const CreateLayoutRouteWithChildren = CreateLayoutRoute._addFileChildren(
+  CreateLayoutRouteChildren
+);
+
+interface CreateRouteChildren {
+  CreateLayoutRoute: typeof CreateLayoutRouteWithChildren;
+}
+
+const CreateRouteChildren: CreateRouteChildren = {
+  CreateLayoutRoute: CreateLayoutRouteWithChildren,
+};
+
+const CreateRouteWithChildren =
+  CreateRoute._addFileChildren(CreateRouteChildren);
+
+interface DashboardLayoutRouteChildren {
+  DashboardLayoutIndexRoute: typeof DashboardLayoutIndexRoute;
+  DashboardLayoutExperimentIdRoute: typeof DashboardLayoutExperimentIdRoute;
+}
+
+const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
+  DashboardLayoutIndexRoute: DashboardLayoutIndexRoute,
+  DashboardLayoutExperimentIdRoute: DashboardLayoutExperimentIdRoute,
+};
+
+const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
+  DashboardLayoutRouteChildren
+);
+
+interface DashboardRouteChildren {
+  DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren;
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardLayoutRoute: DashboardLayoutRouteWithChildren,
+};
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren
+);
+
+interface SettingsLayoutRouteChildren {
+  SettingsLayoutHelpLazyRoute: typeof SettingsLayoutHelpLazyRoute;
+  SettingsLayoutLanguageLazyRoute: typeof SettingsLayoutLanguageLazyRoute;
+  SettingsLayoutProfileLazyRoute: typeof SettingsLayoutProfileLazyRoute;
+  SettingsLayoutIndexLazyRoute: typeof SettingsLayoutIndexLazyRoute;
+}
+
+const SettingsLayoutRouteChildren: SettingsLayoutRouteChildren = {
+  SettingsLayoutHelpLazyRoute: SettingsLayoutHelpLazyRoute,
+  SettingsLayoutLanguageLazyRoute: SettingsLayoutLanguageLazyRoute,
+  SettingsLayoutProfileLazyRoute: SettingsLayoutProfileLazyRoute,
+  SettingsLayoutIndexLazyRoute: SettingsLayoutIndexLazyRoute,
+};
+
+const SettingsLayoutRouteWithChildren = SettingsLayoutRoute._addFileChildren(
+  SettingsLayoutRouteChildren
+);
+
+interface SettingsRouteChildren {
+  SettingsLayoutRoute: typeof SettingsLayoutRouteWithChildren;
+}
+
+const SettingsRouteChildren: SettingsRouteChildren = {
+  SettingsLayoutRoute: SettingsLayoutRouteWithChildren,
+};
+
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+  SettingsRouteChildren
+);
+
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
+  '/': typeof IndexRoute;
+  '/login': typeof LoginLazyRoute;
+  '/create': typeof CreateLayoutRouteWithChildren;
+  '/dashboard': typeof DashboardLayoutRouteWithChildren;
+  '/settings': typeof SettingsLayoutRouteWithChildren;
+  '/settings/help': typeof SettingsLayoutHelpLazyRoute;
+  '/settings/language': typeof SettingsLayoutLanguageLazyRoute;
+  '/settings/profile': typeof SettingsLayoutProfileLazyRoute;
+  '/dashboard/': typeof DashboardLayoutIndexRoute;
+  '/create/': typeof CreateLayoutIndexLazyRoute;
+  '/settings/': typeof SettingsLayoutIndexLazyRoute;
+  '/create/draft-experiment/$id': typeof CreateLayoutDraftExperimentIdRoute;
+  '/dashboard/experiment/$id': typeof DashboardLayoutExperimentIdRoute;
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
+  '/': typeof IndexRoute;
+  '/login': typeof LoginLazyRoute;
+  '/create': typeof CreateLayoutIndexLazyRoute;
+  '/dashboard': typeof DashboardLayoutIndexRoute;
+  '/settings': typeof SettingsLayoutIndexLazyRoute;
+  '/settings/help': typeof SettingsLayoutHelpLazyRoute;
+  '/settings/language': typeof SettingsLayoutLanguageLazyRoute;
+  '/settings/profile': typeof SettingsLayoutProfileLazyRoute;
+  '/create/draft-experiment/$id': typeof CreateLayoutDraftExperimentIdRoute;
+  '/dashboard/experiment/$id': typeof DashboardLayoutExperimentIdRoute;
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute;
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
+  '/': typeof IndexRoute;
+  '/login': typeof LoginLazyRoute;
+  '/create': typeof CreateRouteWithChildren;
+  '/create/_layout': typeof CreateLayoutRouteWithChildren;
+  '/dashboard': typeof DashboardRouteWithChildren;
+  '/dashboard/_layout': typeof DashboardLayoutRouteWithChildren;
+  '/settings': typeof SettingsRouteWithChildren;
+  '/settings/_layout': typeof SettingsLayoutRouteWithChildren;
+  '/settings/_layout/help': typeof SettingsLayoutHelpLazyRoute;
+  '/settings/_layout/language': typeof SettingsLayoutLanguageLazyRoute;
+  '/settings/_layout/profile': typeof SettingsLayoutProfileLazyRoute;
+  '/dashboard/_layout/': typeof DashboardLayoutIndexRoute;
+  '/create/_layout/': typeof CreateLayoutIndexLazyRoute;
+  '/settings/_layout/': typeof SettingsLayoutIndexLazyRoute;
+  '/create/_layout/draft-experiment/$id': typeof CreateLayoutDraftExperimentIdRoute;
+  '/dashboard/_layout/experiment/$id': typeof DashboardLayoutExperimentIdRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/about";
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/create'
+    | '/dashboard'
+    | '/settings'
+    | '/settings/help'
+    | '/settings/language'
+    | '/settings/profile'
+    | '/dashboard/'
+    | '/create/'
+    | '/settings/'
+    | '/create/draft-experiment/$id'
+    | '/dashboard/experiment/$id';
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/about";
-  id: "__root__" | "/" | "/about";
+  to:
+    | '/'
+    | '/login'
+    | '/create'
+    | '/dashboard'
+    | '/settings'
+    | '/settings/help'
+    | '/settings/language'
+    | '/settings/profile'
+    | '/create/draft-experiment/$id'
+    | '/dashboard/experiment/$id';
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/create'
+    | '/create/_layout'
+    | '/dashboard'
+    | '/dashboard/_layout'
+    | '/settings'
+    | '/settings/_layout'
+    | '/settings/_layout/help'
+    | '/settings/_layout/language'
+    | '/settings/_layout/profile'
+    | '/dashboard/_layout/'
+    | '/create/_layout/'
+    | '/settings/_layout/'
+    | '/create/_layout/draft-experiment/$id'
+    | '/dashboard/_layout/experiment/$id';
   fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
-  AboutRoute: typeof AboutRoute;
+  LoginLazyRoute: typeof LoginLazyRoute;
+  CreateRoute: typeof CreateRouteWithChildren;
+  DashboardRoute: typeof DashboardRouteWithChildren;
+  SettingsRoute: typeof SettingsRouteWithChildren;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  LoginLazyRoute: LoginLazyRoute,
+  CreateRoute: CreateRouteWithChildren,
+  DashboardRoute: DashboardRouteWithChildren,
+  SettingsRoute: SettingsRouteWithChildren,
 };
 
 export const routeTree = rootRoute
@@ -97,14 +475,93 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/login",
+        "/create",
+        "/dashboard",
+        "/settings"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/login": {
+      "filePath": "login.lazy.tsx"
+    },
+    "/create": {
+      "filePath": "create",
+      "children": [
+        "/create/_layout"
+      ]
+    },
+    "/create/_layout": {
+      "filePath": "create/_layout.tsx",
+      "parent": "/create",
+      "children": [
+        "/create/_layout/",
+        "/create/_layout/draft-experiment/$id"
+      ]
+    },
+    "/dashboard": {
+      "filePath": "dashboard",
+      "children": [
+        "/dashboard/_layout"
+      ]
+    },
+    "/dashboard/_layout": {
+      "filePath": "dashboard/_layout.tsx",
+      "parent": "/dashboard",
+      "children": [
+        "/dashboard/_layout/",
+        "/dashboard/_layout/experiment/$id"
+      ]
+    },
+    "/settings": {
+      "filePath": "settings",
+      "children": [
+        "/settings/_layout"
+      ]
+    },
+    "/settings/_layout": {
+      "filePath": "settings/_layout.tsx",
+      "parent": "/settings",
+      "children": [
+        "/settings/_layout/help",
+        "/settings/_layout/language",
+        "/settings/_layout/profile",
+        "/settings/_layout/"
+      ]
+    },
+    "/settings/_layout/help": {
+      "filePath": "settings/_layout/help.lazy.tsx",
+      "parent": "/settings/_layout"
+    },
+    "/settings/_layout/language": {
+      "filePath": "settings/_layout/language.lazy.tsx",
+      "parent": "/settings/_layout"
+    },
+    "/settings/_layout/profile": {
+      "filePath": "settings/_layout/profile.lazy.tsx",
+      "parent": "/settings/_layout"
+    },
+    "/dashboard/_layout/": {
+      "filePath": "dashboard/_layout/index.tsx",
+      "parent": "/dashboard/_layout"
+    },
+    "/create/_layout/": {
+      "filePath": "create/_layout/index.lazy.tsx",
+      "parent": "/create/_layout"
+    },
+    "/settings/_layout/": {
+      "filePath": "settings/_layout/index.lazy.tsx",
+      "parent": "/settings/_layout"
+    },
+    "/create/_layout/draft-experiment/$id": {
+      "filePath": "create/_layout/draft-experiment/$id.tsx",
+      "parent": "/create/_layout"
+    },
+    "/dashboard/_layout/experiment/$id": {
+      "filePath": "dashboard/_layout/experiment/$id.tsx",
+      "parent": "/dashboard/_layout"
     }
   }
 }
