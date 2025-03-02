@@ -12,12 +12,6 @@ pnpm install
 pnpm dev
 ```
 
-## Run locally without mock
-
-```
-pnpm dev:server
-```
-
 ## Improvements
 
 - Login/ Logout/ Auth/ Roles
@@ -31,7 +25,4 @@ pnpm dev:server
 - Playwright snapshot testing, e2e test with cypress/ playwright, more indepth integration test with msw, more indepth unit test, add test coverage threshold
 - responsiveness, keyboard navigation and keyboar shortcuts, url shortcuts
 - Feature flagging
-
-## To do
-
-- remove comments
+- Integrate with Node.js with Express, Prisma ORM, PostgreSQL
