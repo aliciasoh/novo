@@ -71,13 +71,14 @@ export const ViewExperiment = () => {
                       <FormControl>
                         <Button
                           disabled
+                          aria-label="date"
                           variant={'outline'}
                           className={cn(
                             'w-[240px] pl-3 text-left font-normal',
                             !field.value && 'text-muted-foreground'
                           )}
                         >
-                          {format(field.value, 'PPP')}
+                          {field.value ? format(field.value, 'PPP') : ''}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
                       </FormControl>

@@ -14,6 +14,29 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './vitest.setup.ts', // Ensure this path is correct
+    include: ['./src/**/*.{test,spec}.tsx'],
+    exclude: [
+      '**/.husky/**',
+      '**/.vscode/**',
+      '**/.git/**',
+      '**/dist/**',
+      '**/node_modules/**',
+      '**/public/**',
+      '**/public/**',
+      '**/hooks/**',
+      '**/components/**',
+      '**/lib/**',
+      '**/locales/**',
+      '**/mocks/**',
+      '**/routes/**',
+      '**/test/**',
+      '**/types/**',
+    ],
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

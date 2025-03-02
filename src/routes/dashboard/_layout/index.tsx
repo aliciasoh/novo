@@ -1,4 +1,4 @@
-import { ExperimentsTabsViewWithTable } from '@/experiments/experiments-tabs-view-witth-table';
+import { ExperimentsTabsViewWithTable } from '@/experiments/experiments-tabs-view-with-table';
 import { draftExperimentsQueryFn } from '@/hooks/useDraftExperiments';
 import { experimentsQueryFn } from '@/hooks/useExperiments';
 import { queryClient } from '@/main';

@@ -14,6 +14,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
 
   return (
     <nav
+      aria-label="navigation"
       className={cn('flex space-x-2 flex-col space-x-0 space-y-1', className)}
       {...props}
     >
@@ -21,6 +22,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
         <Link
           key={item.to}
           to={item.to}
+          aria-label={item.title}
           className={cn(
             'w-[80%]',
             buttonVariants({ variant: 'ghost' }),

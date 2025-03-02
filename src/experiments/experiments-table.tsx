@@ -86,6 +86,7 @@ export const useColumns = (isDraft: boolean) => {
       {
         id: 'actions',
         enableHiding: false,
+        header: () => <span>{t('action')}</span>,
         cell: ({ row }) => {
           const data = row.original;
           return (
@@ -125,7 +126,7 @@ export const ExperimentsTable = ({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [filterBy, setFilterBy] = useState('');
+  const [filterBy, setFilterBy] = useState<string>('');
   const columns = useColumns(isDraft ? true : false);
   const table = useReactTable({
     data,
@@ -151,10 +152,14 @@ export const ExperimentsTable = ({
           <Input
             placeholder={t('filter-term')}
             value={
-              (table.getColumn(filterBy)?.getFilterValue() as string) ?? ''
+              filterBy === ''
+                ? ''
+                : (table.getColumn(filterBy)?.getFilterValue() as string)
             }
             onChange={(event) =>
-              table.getColumn(filterBy)?.setFilterValue(event.target.value)
+              filterBy === ''
+                ? null
+                : table.getColumn(filterBy)?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />

@@ -89,5 +89,6 @@
   "body-description": "Tell us about the issue or any feedback",
   "body-validation-min": "Body must be at least 2 characters.",
   "body-validation-max": "Body must not be longer than 160 characters.",
-  "create-ticket": "Create ticket"
+  "create-ticket": "Create ticket",
+  "action": "Action"
 }

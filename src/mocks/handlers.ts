@@ -11,7 +11,6 @@ const openDB = async (): Promise<IDBDatabase> => {
     const request = indexedDB.open(indexedDBName, indexedDBVersion);
 
     request.onupgradeneeded = () => {
-      console.log('Upgrading IndexedDB...');
       const upgradeDB = request.result;
       if (!upgradeDB.objectStoreNames.contains('experiments')) {
         upgradeDB.createObjectStore('experiments', {

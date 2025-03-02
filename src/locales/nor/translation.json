@@ -89,5 +89,6 @@
   "body-description": "Fortell oss om problemet eller gi tilbakemelding",
   "body-validation-min": "Beskrivelsen må være minst 2 tegn.",
   "body-validation-max": "Beskrivelsen må ikke være lengre enn 160 tegn.",
-  "create-ticket": "Opprett ticket"
+  "create-ticket": "Opprett ticket",
+  "action": "Handling"
 }

@@ -14,7 +14,7 @@ export function SettingsProfile() {
       <Separator />
       <div className="space-y-8">
         <Label>{t('email')}</Label>
-        <Input disabled value="aliciasoh@example.com" />
+        <Input aria-label="email" disabled value="aliciasoh@example.com" />
       </div>
     </div>
   );
