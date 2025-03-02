@@ -11,7 +11,7 @@ import { SkeletonLoading } from './components/skeleton-loading';
 
 // Utility to initialize MSW (moved out of main.tsx)
 async function initializeMSW() {
-  if (import.meta.env.VITE_MOCK && import.meta.env.MODE !== 'test') {
+  if (import.meta.env.VITE_MOCK && import.meta.env.MODE === 'development') {
     const { worker } = await import('./mocks/browser');
     await worker.start();
   }
