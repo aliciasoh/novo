@@ -5,7 +5,6 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const indexedDBName = 'experimentsDB';
 const indexedDBVersion = 1;
 let db: IDBDatabase | null = null;
-// Open or upgrade IndexedDB properly
 const openDB = async (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(indexedDBName, indexedDBVersion);
@@ -38,14 +37,12 @@ const openDB = async (): Promise<IDBDatabase> => {
   });
 };
 
-// Utility to get object store safely
 const getObjectStore = async (storeName: string, mode: IDBTransactionMode) => {
   const database = await openDB();
   const transaction = database.transaction(storeName, mode);
   return transaction.objectStore(storeName);
 };
 
-// Utility to wait for IndexedDB request completion
 const getRequestResult = <T>(request: IDBRequest<T>): Promise<T | null> => {
   return new Promise((resolve, reject) => {
     request.onsuccess = () => resolve(request.result ?? null);

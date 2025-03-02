@@ -17,7 +17,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: './vitest.setup.ts', // Ensure this path is correct
+    setupFiles: './vitest.setup.ts',
     include: ['./src/**/*.{test,spec}.tsx'],
     exclude: [
       '**/.husky/**',

@@ -3,7 +3,6 @@ import { initReactI18next } from 'react-i18next';
 import en from './locales/en/translation.json';
 import nor from './locales/nor/translation.json';
 
-// Get the language from localStorage or fallback to 'en'
 const storedLanguage = localStorage.getItem('language') || 'en';
 
 i18n.use(initReactI18next).init({
@@ -11,10 +10,10 @@ i18n.use(initReactI18next).init({
     en: { translation: en },
     nor: { translation: nor },
   },
-  lng: storedLanguage, // Set initial language from localStorage
-  fallbackLng: 'en', // Fallback language
+  lng: storedLanguage,
+  fallbackLng: 'en',
   interpolation: {
-    escapeValue: false, // React already escapes the values
+    escapeValue: false,
   },
 });
 

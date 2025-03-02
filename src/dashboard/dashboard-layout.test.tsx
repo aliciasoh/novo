@@ -1,6 +1,5 @@
-// src/components/DashboardLayout.test.tsx
 import { render, screen } from '@testing-library/react';
-import { DashboardLayout } from './dashboard-layout'; // Adjust import path as needed
+import { DashboardLayout } from './dashboard-layout';
 import { RouterProvider } from '@tanstack/react-router';
 import { initializeRouter } from '@/test/router';
 import { vi } from 'vitest';
@@ -38,16 +37,15 @@ describe('DashboardLayout', () => {
   });
 
   it('should render the layout with navigation and children correctly', async () => {
-    expect(screen.getByText('Dashboard Content')).toBeInTheDocument(); // Adjust based on MainNav output
+    expect(screen.getByText('Dashboard Content')).toBeInTheDocument();
 
     const dashboard = screen.getByRole('link', { name: 'dashboard' });
     const create = screen.getByRole('link', { name: 'create-new' });
     expect(dashboard).toBeInTheDocument();
     expect(create).toBeInTheDocument();
     expect(screen.getByText('experiment-website')).toBeInTheDocument();
-    expect(screen.getByText('AS')).toBeInTheDocument(); // Adjust based on UserNav output
+    expect(screen.getByText('AS')).toBeInTheDocument();
 
-    // Check children content
     expect(screen.getByTestId('child-content')).toHaveTextContent(
       'Dashboard Content'
     );

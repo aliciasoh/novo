@@ -30,8 +30,8 @@ pnpm dev:server
 - Implement Github CI/CD to build and deploy
 - Playwright snapshot testing, e2e test with cypress/ playwright, more indepth integration test with msw, more indepth unit test, add test coverage threshold
 - responsiveness, keyboard navigation and keyboar shortcuts, url shortcuts
+- Feature flagging
 
 ## To do
 
-- Backend with db instead of mock and Indexedb
 - remove comments

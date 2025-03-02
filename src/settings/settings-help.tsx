@@ -19,7 +19,6 @@ import { Button } from '@/components/ui/button';
 export function SettingsHelp() {
   const { t } = useTranslation();
 
-  // Dynamic error messages using translations
   const helpFormSchema = z.object({
     title: z
       .string()

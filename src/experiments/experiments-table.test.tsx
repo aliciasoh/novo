@@ -1,8 +1,7 @@
-// src/create/experiments-table.test.tsx
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { ExperimentsTable } from './experiments-table'; // Adjust import path as needed
+import { ExperimentsTable } from './experiments-table';
 import { RouterProvider } from '@tanstack/react-router';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/main';
@@ -11,7 +10,6 @@ import { server } from '@/mocks/server';
 import { http, HttpResponse } from 'msw';
 import { axe } from 'jest-axe';
 
-// Mock react-i18next with importOriginal
 vi.mock('react-i18next', async (importOriginal) => {
   const actual = await importOriginal<typeof import('react-i18next')>();
   return {
@@ -82,7 +80,6 @@ describe('ExperimentsTable', () => {
     );
     render(<RouterProvider router={router} />);
 
-    // Optional: Mock MSW even though this component uses props
     server.use(
       http.get(
         `${import.meta.env.VITE_API_BASE_URL}/experiments`,
@@ -99,21 +96,17 @@ describe('ExperimentsTable', () => {
   });
 
   it('should render the table with experiment data', async () => {
-    // Wait for table to render
     await waitFor(() => {
       expect(screen.getByText('name')).toBeInTheDocument();
     });
 
-    // Check column headers
     expect(screen.getByText('description')).toBeInTheDocument();
     expect(screen.getByText('date')).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'view' })).toHaveLength(2);
 
-    // Check table rows
     const rows = screen.getAllByRole('row');
-    expect(rows).toHaveLength(3); // 1 header + 2 data rows
+    expect(rows).toHaveLength(3);
 
-    // Check row data
     const row1 = within(rows[1]);
     expect(row1.getByText('Experiment 1')).toBeInTheDocument();
     expect(row1.getByText('First experiment desc')).toBeInTheDocument();
@@ -131,17 +124,14 @@ describe('ExperimentsTable', () => {
     const filterInput = screen.getByPlaceholderText('filter-term');
     const filterByButton = screen.getByText('filter-by');
 
-    // Set filter column to 'name'
     await user.click(filterByButton);
     await user.click(screen.getByRole('menuitem', { name: 'name' }));
 
-    // Type filter value
     await user.type(filterInput, 'Experiment 1');
 
-    // Check filtered results
     await waitFor(() => {
       const rows = screen.getAllByRole('row');
-      expect(rows).toHaveLength(2); // 1 header + 1 filtered row
+      expect(rows).toHaveLength(2);
       expect(within(rows[1]).getByText('Experiment 1')).toBeInTheDocument();
       expect(screen.queryByText('Experiment 2')).not.toBeInTheDocument();
     });
@@ -149,15 +139,14 @@ describe('ExperimentsTable', () => {
 
   it('should sort experiments by date', async () => {
     const dateHeader = screen.getByText('date');
-    await user.click(dateHeader); // Sort ascending
+    await user.click(dateHeader);
 
     const rows = screen.getAllByRole('row');
-    expect(within(rows[1]).getByText('2025-03-01')).toBeInTheDocument(); // First row
-    expect(within(rows[2]).getByText('2025-04-01')).toBeInTheDocument(); // Second row
+    expect(within(rows[1]).getByText('2025-03-01')).toBeInTheDocument();
+    expect(within(rows[2]).getByText('2025-04-01')).toBeInTheDocument();
   });
 
   it('should render draft actions when isDraft is true', async () => {
-    // Re-render with isDraft=true
     const router = initializeRouter(
       <QueryClientProvider client={queryClient}>
         <TestFixture isDraft />
@@ -166,7 +155,7 @@ describe('ExperimentsTable', () => {
     render(<RouterProvider router={router} />);
 
     await waitFor(() => {
-      expect(screen.getAllByText('edit')[0]).toBeInTheDocument(); // Check first 'edit' button
+      expect(screen.getAllByText('edit')[0]).toBeInTheDocument();
     });
 
     const editLinks = screen.getAllByText('edit');

@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import { DraftForm } from './draft-form'; // Adjust import path as needed
+import { DraftForm } from './draft-form';
 import { RouterProvider } from '@tanstack/react-router';
 import { initializeRouter } from '@/test/router';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -26,7 +26,7 @@ vi.mock('react-i18next', async (importOriginal) => {
   return {
     ...actual,
     useTranslation: () => ({
-      t: (key: string) => key, // Override useTranslation to return key as translation
+      t: (key: string) => key,
     }),
   };
 });
@@ -113,7 +113,6 @@ describe('DraftForm', () => {
       name: 'create-experiment',
     });
 
-    // Simulate user input
     await user.type(nameInput, 'test name');
     await user.type(descriptionInput, 'test desc');
     const date = new Date();
