@@ -161,20 +161,6 @@ export const ExperimentsTable = ({
     <div className="w-full">
       <div className="flex items-center justify-between py-4">
         <div className="flex gap-4">
-          <Input
-            placeholder={t('filter-term')}
-            value={
-              filterBy === ''
-                ? ''
-                : (table.getColumn(filterBy)?.getFilterValue() as string)
-            }
-            onChange={(event) =>
-              filterBy === ''
-                ? null
-                : table.getColumn(filterBy)?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -203,6 +189,21 @@ export const ExperimentsTable = ({
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
+          <Input
+            placeholder={t('filter-term')}
+            disabled={filterBy === ''}
+            value={
+              filterBy === ''
+                ? ''
+                : (table.getColumn(filterBy)?.getFilterValue() as string)
+            }
+            onChange={(event) =>
+              filterBy === ''
+                ? null
+                : table.getColumn(filterBy)?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
         </div>
         <div className="flex gap-4">
           <DropdownMenu>
