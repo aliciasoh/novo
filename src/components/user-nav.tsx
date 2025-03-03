@@ -41,7 +41,9 @@ export function UserNav() {
           <DropdownMenuItem>{t('help')}</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>{t('logout')}</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/login">{t('logout')}</Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

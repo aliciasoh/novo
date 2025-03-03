@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, ChevronDown } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -34,6 +34,18 @@ import { Link } from '@tanstack/react-router';
 import { Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+const getColumnSortedIcon = (sorted?: string) => {
+  if (sorted) {
+    if (sorted === 'asc') {
+      return <ArrowUp />;
+    } else {
+      return <ArrowDown />;
+    }
+  } else {
+    return <ArrowUpDown />;
+  }
+};
+
 export const useColumns = (isDraft: boolean) => {
   const { t } = useTranslation();
   return useMemo<ColumnDef<Experiment | DraftExperiment>[]>(
@@ -46,7 +58,7 @@ export const useColumns = (isDraft: boolean) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             {t('name')}
-            <ArrowUpDown />
+            {getColumnSortedIcon(column.getIsSorted() || undefined)}
           </Button>
         ),
         cell: ({ row }) => (
@@ -61,7 +73,7 @@ export const useColumns = (isDraft: boolean) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             {t('description')}
-            <ArrowUpDown />
+            {getColumnSortedIcon(column.getIsSorted() || undefined)}
           </Button>
         ),
         cell: ({ row }) => (
@@ -76,7 +88,7 @@ export const useColumns = (isDraft: boolean) => {
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           >
             {t('date')}
-            <ArrowUpDown />
+            {getColumnSortedIcon(column.getIsSorted() || undefined)}
           </Button>
         ),
         cell: ({ row }) => (
@@ -279,10 +291,6 @@ export const ExperimentsTable = ({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} {t('rows-selected')}{' '}
-          of {table.getFilteredRowModel().rows.length} {t('rows')}
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"

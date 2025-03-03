@@ -26,7 +26,6 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
   return {
     ...actual,
     useRouterState: () => ({ location: { hash: '' } }),
-    h,
   };
 });
 

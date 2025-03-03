@@ -23,7 +23,7 @@ import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { Textarea } from '@/components/ui/textarea';
-import { useNavigate, useParams } from '@tanstack/react-router';
+import { useBlocker, useNavigate, useParams } from '@tanstack/react-router';
 import { useCreateExperiment } from '@/hooks/useCreateExperiment';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -32,14 +32,18 @@ import { LeaveDialog } from '@/components/leave-dialog';
 import { useAlertDialog } from '@/hooks/useAlertDialog';
 import { useDeleteDraftExperiment } from '@/hooks/useDeleteDraftExperiment';
 import { useTranslation } from 'react-i18next';
+import { useSaveDraftExperiment } from '@/hooks/useSaveDraftExperiment';
+import { useUpdateDraftExperiment } from '@/hooks/useUpdateDraftExperiment';
 
 export const DraftForm = () => {
   const { t } = useTranslation();
   const { id } = useParams({ strict: false });
   const { data: draftExperiment } = useDraftExperiment(id ?? '');
   const { mutate: deleteDraft } = useDeleteDraftExperiment();
+  const { mutate: saveDraft } = useSaveDraftExperiment();
+  const { mutate: updateDraft } = useUpdateDraftExperiment();
   const { mutate: create } = useCreateExperiment();
-  const { closeDialog, isOpen, setIsOpen } = useAlertDialog();
+  const { closeDialog, isOpen, setIsOpen, openDialog } = useAlertDialog();
   const navigate = useNavigate();
 
   const formSchema = z.object({
@@ -72,7 +76,69 @@ export const DraftForm = () => {
       description: '',
     },
   });
-  const { setValue } = form;
+  const {
+    setValue,
+    formState: { isDirty },
+    getValues,
+  } = form;
+
+  useBlocker({
+    shouldBlockFn: ({ next }) => {
+      if (next.fullPath.includes('/dashboard/experiment')) {
+        return false;
+      } else {
+        if (isDirty) {
+          return new Promise(async (resolve) => {
+            const response = await openDialog();
+            if (response) {
+              if (id) {
+                const values = getValues();
+                const data = {
+                  name: values.name,
+                  date: values.date.toString(),
+                  description: values.description,
+                };
+                updateDraft(
+                  { data, id },
+                  {
+                    onSuccess: () => {
+                      toast(t('draft-updated-successfully'));
+                      resolve(false);
+                    },
+                    onError: () => {
+                      toast(t('failed-to-updated-draft'));
+                      resolve(true);
+                    },
+                  }
+                );
+              } else {
+                const values = getValues();
+                const data = {
+                  name: values.name,
+                  date: values.date.toString(),
+                  description: values.description,
+                };
+                saveDraft(data, {
+                  onSuccess: () => {
+                    toast(t('draft-created-successfully'));
+                    resolve(false);
+                  },
+                  onError: () => {
+                    toast(t('failed-to-create-draft'));
+                    resolve(true);
+                  },
+                });
+              }
+            } else {
+              resolve(response);
+            }
+          });
+        } else {
+          return false;
+        }
+      }
+    },
+  });
 
   useEffect(() => {
     if (draftExperiment) {
@@ -93,18 +159,26 @@ export const DraftForm = () => {
     };
     create(data, {
       onSuccess: (data) => {
-        deleteDraft(id!, {
-          onSuccess: () => {
-            toast(t('experiment-created-successfully'));
-            navigate({
-              to: '/dashboard/experiment/$id',
-              params: { id: data },
-            });
-          },
-          onError: () => {
-            toast(t('failed-to-delete-draft'));
-          },
-        });
+        if (id) {
+          deleteDraft(id, {
+            onSuccess: () => {
+              toast(t('experiment-created-successfully'));
+              navigate({
+                to: '/dashboard/experiment/$id',
+                params: { id: data },
+              });
+            },
+            onError: () => {
+              toast(t('failed-to-delete-draft'));
+            },
+          });
+        } else {
+          toast(t('experiment-created-successfully'));
+          navigate({
+            to: '/dashboard/experiment/$id',
+            params: { id: data },
+          });
+        }
       },
       onError: () => {
         toast(t('failed-to-create-experiment'));

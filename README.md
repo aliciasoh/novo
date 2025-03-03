@@ -23,6 +23,6 @@ pnpm dev
 - Inttroduce audit logs
 - Implement Github CI/CD to build and deploy
 - Playwright snapshot testing, e2e test with cypress/ playwright, more indepth integration test with msw, more indepth unit test, add test coverage threshold
-- responsiveness, keyboard navigation and keyboar shortcuts, url shortcuts
+- responsiveness, keyboard navigation and keyboard shortcuts, url shortcuts
 - Feature flagging
 - Integrate with Node.js with Express, Prisma ORM, PostgreSQL
