@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 import { SkeletonLoading } from './components/skeleton-loading';
 
 async function initializeMSW() {
-  if (import.meta.env.VITE_MOCK && import.meta.env.MODE === 'development') {
+  if (import.meta.env.VITE_MOCK && import.meta.env.MODE !== 'test') {
     const { worker } = await import('./mocks/browser');
     await worker.start();
   }
