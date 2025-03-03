@@ -85,24 +85,26 @@ export const ExperimentsTabsViewWithTable = () => {
           </h2>
           <div className="flex items-center space-x-2">
             <CalendarDateRangePicker setDate={setDate} date={date} />
-            <CSVLink
-              data={
-                activeTab === 'experiments'
-                  ? (experiments ?? [])
-                  : (draftExperiments ?? [])
-              }
-              headers={[
-                { label: 'ID', key: 'id' },
-                { label: 'Name', key: 'name' },
-                { label: 'Date', key: 'date' },
-                { label: 'Description', key: 'description' },
-              ]}
-              filename="filtered_data.csv"
-            >
-              <Button disabled={filteredData.length === 0}>
-                {t('download')}
-              </Button>
-            </CSVLink>
+            {filteredData.length === 0 ? (
+              <Button disabled>{t('download')}</Button>
+            ) : (
+              <CSVLink
+                data={
+                  activeTab === 'experiments'
+                    ? (experiments ?? [])
+                    : (draftExperiments ?? [])
+                }
+                headers={[
+                  { label: 'ID', key: 'id' },
+                  { label: 'Name', key: 'name' },
+                  { label: 'Date', key: 'date' },
+                  { label: 'Description', key: 'description' },
+                ]}
+                filename="filtered_data.csv"
+              >
+                <Button>{t('download')}</Button>
+              </CSVLink>
+            )}
           </div>
         </div>
         <Tabs
