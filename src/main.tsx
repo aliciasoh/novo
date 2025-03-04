@@ -5,8 +5,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorPage } from './components/error-page';
 import { NotFoundPage } from './components/not-found-page';
 import './i18';
-import { Suspense } from 'react';
-import { SkeletonLoading } from './components/skeleton-loading';
 
 async function initializeMSW() {
   if (import.meta.env.VITE_MOCK && import.meta.env.MODE !== 'test') {
@@ -36,9 +34,7 @@ function renderApp() {
     const root = ReactDOM.createRoot(rootElement);
     root.render(
       <QueryClientProvider client={queryClient}>
-        <Suspense fallback={<SkeletonLoading />}>
-          <RouterProvider router={router} />
-        </Suspense>
+        <RouterProvider router={router} />
       </QueryClientProvider>
     );
   }

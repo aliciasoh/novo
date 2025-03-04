@@ -1,4 +1,4 @@
-import { beforeAll, afterEach, afterAll, vi } from 'vitest';
+import { beforeAll, afterEach, afterAll } from 'vitest';
 import '@testing-library/jest-dom';
 import { server } from '@/mocks/server';
 

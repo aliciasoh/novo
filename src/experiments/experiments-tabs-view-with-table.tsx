@@ -5,8 +5,7 @@ import { ExperimentsTable } from './experiments-table';
 import { CalendarDateRangePicker } from '@/components/date-range-picker';
 import { Button } from '@/components/ui/button';
 import { useRouterState } from '@tanstack/react-router';
-import { Suspense, useEffect, useState } from 'react';
-import { SkeletonLoading } from '@/components/skeleton-loading';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CSVLink } from 'react-csv';
 import { DateRange } from 'react-day-picker';
@@ -119,23 +118,19 @@ export const ExperimentsTabsViewWithTable = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="experiments" className="space-y-4">
-            <Suspense fallback={<SkeletonLoading />}>
-              <ExperimentsTable
-                isRefetching={isRefetchingExperiments}
-                data={experiments ?? []}
-                onClickRefresh={onClickRefresh}
-              />
-            </Suspense>
+            <ExperimentsTable
+              isRefetching={isRefetchingExperiments}
+              data={experiments ?? []}
+              onClickRefresh={onClickRefresh}
+            />
           </TabsContent>
           <TabsContent value="draft-experiments" className="space-y-4">
-            <Suspense fallback={<SkeletonLoading />}>
-              <ExperimentsTable
-                isDraft
-                isRefetching={isRefetchingDraftExperiments}
-                data={draftExperiments ?? []}
-                onClickRefresh={onClickRefresh}
-              />
-            </Suspense>
+            <ExperimentsTable
+              isDraft
+              isRefetching={isRefetchingDraftExperiments}
+              data={draftExperiments ?? []}
+              onClickRefresh={onClickRefresh}
+            />
           </TabsContent>
         </Tabs>
       </div>

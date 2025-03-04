@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Experiment } from '../api-types';
 import { BASE_CONFIG } from '.';
 import { format } from 'date-fns';
@@ -25,5 +25,5 @@ export const experimentsQueryFn = {
 };
 
 export const useExperiments = () => {
-  return useQuery<Experiment[]>(experimentsQueryFn);
+  return useSuspenseQuery<Experiment[]>(experimentsQueryFn);
 };

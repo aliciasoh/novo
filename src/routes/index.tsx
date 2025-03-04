@@ -4,11 +4,11 @@ export const Route = createFileRoute('/')({
   beforeLoad: async () => {
     const isAuthenticated = false;
     if (!isAuthenticated) {
-      throw redirect({
+      return redirect({
         to: '/login',
       });
     } else {
-      redirect({
+      return redirect({
         to: '/dashboard',
       });
     }
