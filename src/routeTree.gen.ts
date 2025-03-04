@@ -17,6 +17,7 @@ import { Route as IndexImport } from './routes/index';
 import { Route as SettingsLayoutImport } from './routes/settings/_layout';
 import { Route as DashboardLayoutImport } from './routes/dashboard/_layout';
 import { Route as CreateLayoutImport } from './routes/create/_layout';
+import { Route as DashboardLayoutIndexImport } from './routes/dashboard/_layout/index';
 import { Route as DashboardLayoutExperimentIdImport } from './routes/dashboard/_layout/experiment/$id';
 import { Route as CreateLayoutDraftExperimentIdImport } from './routes/create/_layout/draft-experiment/$id';
 
@@ -27,7 +28,6 @@ const DashboardImport = createFileRoute('/dashboard')();
 const CreateImport = createFileRoute('/create')();
 const LoginLazyImport = createFileRoute('/login')();
 const SettingsLayoutIndexLazyImport = createFileRoute('/settings/_layout/')();
-const DashboardLayoutIndexLazyImport = createFileRoute('/dashboard/_layout/')();
 const CreateLayoutIndexLazyImport = createFileRoute('/create/_layout/')();
 const SettingsLayoutProfileLazyImport = createFileRoute(
   '/settings/_layout/profile'
@@ -94,14 +94,6 @@ const SettingsLayoutIndexLazyRoute = SettingsLayoutIndexLazyImport.update({
   import('./routes/settings/_layout/index.lazy').then((d) => d.Route)
 );
 
-const DashboardLayoutIndexLazyRoute = DashboardLayoutIndexLazyImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any).lazy(() =>
-  import('./routes/dashboard/_layout/index.lazy').then((d) => d.Route)
-);
-
 const CreateLayoutIndexLazyRoute = CreateLayoutIndexLazyImport.update({
   id: '/',
   path: '/',
@@ -109,6 +101,12 @@ const CreateLayoutIndexLazyRoute = CreateLayoutIndexLazyImport.update({
 } as any).lazy(() =>
   import('./routes/create/_layout/index.lazy').then((d) => d.Route)
 );
+
+const DashboardLayoutIndexRoute = DashboardLayoutIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any);
 
 const SettingsLayoutProfileLazyRoute = SettingsLayoutProfileLazyImport.update({
   id: '/profile',
@@ -231,19 +229,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsLayoutProfileLazyImport;
       parentRoute: typeof SettingsLayoutImport;
     };
+    '/dashboard/_layout/': {
+      id: '/dashboard/_layout/';
+      path: '/';
+      fullPath: '/dashboard/';
+      preLoaderRoute: typeof DashboardLayoutIndexImport;
+      parentRoute: typeof DashboardLayoutImport;
+    };
     '/create/_layout/': {
       id: '/create/_layout/';
       path: '/';
       fullPath: '/create/';
       preLoaderRoute: typeof CreateLayoutIndexLazyImport;
       parentRoute: typeof CreateLayoutImport;
-    };
-    '/dashboard/_layout/': {
-      id: '/dashboard/_layout/';
-      path: '/';
-      fullPath: '/dashboard/';
-      preLoaderRoute: typeof DashboardLayoutIndexLazyImport;
-      parentRoute: typeof DashboardLayoutImport;
     };
     '/settings/_layout/': {
       id: '/settings/_layout/';
@@ -297,12 +295,12 @@ const CreateRouteWithChildren =
   CreateRoute._addFileChildren(CreateRouteChildren);
 
 interface DashboardLayoutRouteChildren {
-  DashboardLayoutIndexLazyRoute: typeof DashboardLayoutIndexLazyRoute;
+  DashboardLayoutIndexRoute: typeof DashboardLayoutIndexRoute;
   DashboardLayoutExperimentIdRoute: typeof DashboardLayoutExperimentIdRoute;
 }
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
-  DashboardLayoutIndexLazyRoute: DashboardLayoutIndexLazyRoute,
+  DashboardLayoutIndexRoute: DashboardLayoutIndexRoute,
   DashboardLayoutExperimentIdRoute: DashboardLayoutExperimentIdRoute,
 };
 
@@ -361,8 +359,8 @@ export interface FileRoutesByFullPath {
   '/settings/help': typeof SettingsLayoutHelpLazyRoute;
   '/settings/language': typeof SettingsLayoutLanguageLazyRoute;
   '/settings/profile': typeof SettingsLayoutProfileLazyRoute;
+  '/dashboard/': typeof DashboardLayoutIndexRoute;
   '/create/': typeof CreateLayoutIndexLazyRoute;
-  '/dashboard/': typeof DashboardLayoutIndexLazyRoute;
   '/settings/': typeof SettingsLayoutIndexLazyRoute;
   '/create/draft-experiment/$id': typeof CreateLayoutDraftExperimentIdRoute;
   '/dashboard/experiment/$id': typeof DashboardLayoutExperimentIdRoute;
@@ -372,7 +370,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute;
   '/login': typeof LoginLazyRoute;
   '/create': typeof CreateLayoutIndexLazyRoute;
-  '/dashboard': typeof DashboardLayoutIndexLazyRoute;
+  '/dashboard': typeof DashboardLayoutIndexRoute;
   '/settings': typeof SettingsLayoutIndexLazyRoute;
   '/settings/help': typeof SettingsLayoutHelpLazyRoute;
   '/settings/language': typeof SettingsLayoutLanguageLazyRoute;
@@ -394,8 +392,8 @@ export interface FileRoutesById {
   '/settings/_layout/help': typeof SettingsLayoutHelpLazyRoute;
   '/settings/_layout/language': typeof SettingsLayoutLanguageLazyRoute;
   '/settings/_layout/profile': typeof SettingsLayoutProfileLazyRoute;
+  '/dashboard/_layout/': typeof DashboardLayoutIndexRoute;
   '/create/_layout/': typeof CreateLayoutIndexLazyRoute;
-  '/dashboard/_layout/': typeof DashboardLayoutIndexLazyRoute;
   '/settings/_layout/': typeof SettingsLayoutIndexLazyRoute;
   '/create/_layout/draft-experiment/$id': typeof CreateLayoutDraftExperimentIdRoute;
   '/dashboard/_layout/experiment/$id': typeof DashboardLayoutExperimentIdRoute;
@@ -412,8 +410,8 @@ export interface FileRouteTypes {
     | '/settings/help'
     | '/settings/language'
     | '/settings/profile'
-    | '/create/'
     | '/dashboard/'
+    | '/create/'
     | '/settings/'
     | '/create/draft-experiment/$id'
     | '/dashboard/experiment/$id';
@@ -442,8 +440,8 @@ export interface FileRouteTypes {
     | '/settings/_layout/help'
     | '/settings/_layout/language'
     | '/settings/_layout/profile'
-    | '/create/_layout/'
     | '/dashboard/_layout/'
+    | '/create/_layout/'
     | '/settings/_layout/'
     | '/create/_layout/draft-experiment/$id'
     | '/dashboard/_layout/experiment/$id';
@@ -545,13 +543,13 @@ export const routeTree = rootRoute
       "filePath": "settings/_layout/profile.lazy.tsx",
       "parent": "/settings/_layout"
     },
+    "/dashboard/_layout/": {
+      "filePath": "dashboard/_layout/index.tsx",
+      "parent": "/dashboard/_layout"
+    },
     "/create/_layout/": {
       "filePath": "create/_layout/index.lazy.tsx",
       "parent": "/create/_layout"
-    },
-    "/dashboard/_layout/": {
-      "filePath": "dashboard/_layout/index.lazy.tsx",
-      "parent": "/dashboard/_layout"
     },
     "/settings/_layout/": {
       "filePath": "settings/_layout/index.lazy.tsx",
